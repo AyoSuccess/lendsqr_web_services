@@ -1,0 +1,1739 @@
+{
+	"info": {
+		"_postman_id": "ebe8cc9e-2d34-4cee-b42d-5080e7bd1752",
+		"name": "Lendsqr Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16801401"
+	},
+	"item": [
+		{
+			"name": "Validation",
+			"item": [
+				{
+					"name": "Bank Verification Number",
+					"item": [
+						{
+							"name": "Initialize BVN Consent",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/*Initiating customer BVN consent*/\r",
+											"\r",
+											"/*checking the status code to be successful*/\r",
+											"pm.test(\"status to be 200\", ()=> {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"/*validating the response body Message field value \"please provide OTP sent to contact*/\r",
+											"\r",
+											"pm.test(\"value of message to be Please provide OTP sent to contact\", ( ) => {\r",
+											" var jsonData =pm.response.json( );\r",
+											" pm.expect(jsonData.status).to.eql(\"otp\");\r",
+											" pm.expect(jsonData.message).to.eql(\"Please provide OTP sent to contact\");\r",
+											" pm.expect(jsonData.data).to.eql(\"0703***3792\");\r",
+											" \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"contact\": \"07033153792\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/22253263429",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										"22253263429"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Complete Consent and get BVN Details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**VALIDATING CUSTOMER CONSENT VIA OTP */\r",
+											"\r",
+											"/**checking that the status code is 200 after providing OTP*/\r",
+											"pm.test(\"status to be 200\", ()=> {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"/**Checking the response time not more than 30ms*/\r",
+											"pm.test(\"Response time to be below 900ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+											"});\r",
+											"\r",
+											"/*validating the response body nationality field value \"Nigeria*/\r",
+											"\r",
+											"pm.test(\"Value status and message to be 'success' and 'Successful'\", ( ) => {\r",
+											" var jsonData =pm.response.json( );\r",
+											"  pm.expect(jsonData.status).to.eql(\"success\")\r",
+											"  pm.expect(jsonData.message).to.eql(\"Successful\")\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"otp\": \"983097\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/22253263429",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										"22253263429"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "base_url: https://adjutor.lendsqr.com/v2/",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Get Accounts for BVN",
+					"item": [
+						{
+							"name": "Verify Customer Bank Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/*Bank Account Verification*/\r",
+											"\r",
+											"pm.test(\"Status to be success, 200\", ()=> {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/*checking for response time to be below 500*/\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", ( ) => {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_number\": \"2098082474\",\r\n    \"bank_code\": \"033\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bankaccount",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bankaccount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Karma for Customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/*checking that the customer is in Karma list = 200\r",
+											"  checking that the customer is not in karma list = 404*/\r",
+											"\r",
+											"pm.test(\"Cusomter in Karma List\", ()=> {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Customer not in Karma List\", ()=> {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Customer is either in Karma List or Not in Karma List\", ( ) => {\r",
+											"  pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+											"});\r",
+											"\r",
+											"/*checking for response time to be below 400*/\r",
+											"\r",
+											"pm.test(\"Response time is less than 400ms\", ( ) => {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/karma/successayodeji62@gmail.com",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"karma",
+										"successayodeji62@gmail.com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Credit Bureaus",
+			"item": [
+				{
+					"name": "Get Credit Report from CRC Credit Bureau",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**VALIDATING CRC RECORD OF A CUSTOMER */\r",
+									"\r",
+									"/**Validating that record is found*/\r",
+									"pm.test(\"Customer CRC History exist 200\", ( ) => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"/** Validating that no record is found */\r",
+									"pm.test(\"Customer has no CRC History\", ( ) => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([204, 404]);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}creditbureaus/crc/22253263429",
+							"host": [
+								"{{base_url}}creditbureaus"
+							],
+							"path": [
+								"crc",
+								"22253263429"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Credit Report from FirstCentral Credit Bureau",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**VALIDATING FirstCentral RECORD OF A CUSTOMER */\r",
+									"\r",
+									"/**Validating that record is found*/\r",
+									"pm.test(\"Customer FirstCentral History exist 200\", ( ) => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"/**Checking the response time not more than 30ms*/\r",
+									"pm.test(\"Response time to be below 600ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+									"});\r",
+									"\r",
+									"/** Validating that no record is found */\r",
+									"pm.test(\"Customer has no FirstCentral History\", ( ) => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([204, 404]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}creditbureaus/firstcentral/22253263429",
+							"host": [
+								"{{base_url}}creditbureaus"
+							],
+							"path": [
+								"firstcentral",
+								"22253263429"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Decisioning",
+			"item": [
+				{
+					"name": "Get Decision Model",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**RETRIEVING DECISION MODELS FOR PROFILE*/\r",
+									"\r",
+									"pm.test(\"Get decision models for my profile\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}decisioning/models",
+							"host": [
+								"{{base_url}}decisioning"
+							],
+							"path": [
+								"models"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Decision Model Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**RETRIEVING DETAILS FOR A DECISION MODEL*/\r",
+									"\r",
+									"/**testing for success status */\r",
+									"pm.test(\"Get details of a decision model\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**testing the response header to have accurate date */\r",
+									"\r",
+									"pm.test (\"Content-Type header is application/json\", ( ) =>  {\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+									"})\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}decisioning/models/9247/settings",
+							"host": [
+								"{{base_url}}decisioning"
+							],
+							"path": [
+								"models",
+								"9247",
+								"settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Embedded Loans and Payments",
+			"item": [
+				{
+					"name": "Loans",
+					"item": [
+						{
+							"name": "Get Loan Products",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**RETRIEVING LOAN PRODUCTS OF DISTRIBUTOR*/\r",
+											"\r",
+											"/**testing for success status */\r",
+											"pm.test(\"Status to be unavailable service, 503\", () => {\r",
+											"    pm.response.to.have.status(503);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response time to get products is less than 500ms\", ( ) => {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"})\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}loans/products",
+									"host": [
+										"{{base_url}}loans"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Initialize Loan Application",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}loans/initialize",
+									"host": [
+										"{{base_url}}loans"
+									],
+									"path": [
+										"initialize"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pay with wallet",
+					"item": [
+						{
+							"name": "Initialize Payment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**Payment Initiation HTTP Request*/\r",
+											"\r",
+											"/**testing for success status */\r",
+											"pm.test(\"Status to be success, 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Initiate Payment in less than 600ms\", ( ) => {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(600);\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_test_5N5FcApMCqN0DsDH3r6Ve292Q2peJGC2ZIynMab0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 80000,\r\n    \"description\": \"Payment for beans and egg\",\r\n    \"callback_url\": \"https://successportfolio.wordpress.com/\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}payments/initialize",
+									"host": [
+										"{{base_url}}payments"
+									],
+									"path": [
+										"initialize"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Data for Lenders",
+			"item": [
+				{
+					"name": "Options",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**RETIEVING DATA OPTIONS */\r",
+									"\r",
+									"/**Validating data optoin found*/\r",
+									"pm.test(\"Data Option  200\", ( ) => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"/**Checking the response time not more than 700ms*/\r",
+									"pm.test(\"Response time to be below 800ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}data/options",
+							"host": [
+								"{{base_url}}data"
+							],
+							"path": [
+								"options"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**RETIEVING USER DATA*/\r",
+									"\r",
+									"/**Validating that user is found*/\r",
+									"pm.test(\"Data Option  200\", ( ) => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"/**validating that user response payload status*/\r",
+									"\r",
+									"pm.test(\"Test value of the response field success\", ( ) => {\r",
+									"var jsonData = pm.response.json( );\r",
+									"  pm.expect(jsonData.success).to.eql(\"true\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"/**Checking the response time not more than 30ms*/\r",
+									"pm.test(\"Response time to be below 800ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}data/users",
+							"host": [
+								"{{base_url}}data"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Operational Services",
+			"item": [
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Get Adjutor Services Pricing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**RETRIEVING PRINCING FOR ALL APIs*/\r",
+											"\r",
+											"/**Validating Success status*/\r",
+											"pm.test(\"Status code  200\", ( ) => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/**Checking the response time not more than 1000ms*/\r",
+											"pm.test(\"Response time to be below 650ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}profile/pricing",
+									"host": [
+										"{{base_url}}profile"
+									],
+									"path": [
+										"pricing"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Wallet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**RETRIEVING PRINCING FOR ALL APIs*/\r",
+											"\r",
+											"/**Validating Success status*/\r",
+											"pm.test(\"Get success status as  200\", ( ) => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/**Checking the response time not more than 1000ms*/\r",
+											"pm.test(\"Response time to be below 600ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+											"});\r",
+											"\r",
+											"/**validating that user response payload status*/\r",
+											"\r",
+											"pm.test(\"Test value of the response field success\", ( ) => {\r",
+											"var jsonData = pm.response.json( );\r",
+											"  pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}profile/wallet",
+									"host": [
+										"{{base_url}}profile"
+									],
+									"path": [
+										"wallet"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Miscellaneous",
+					"item": [
+						{
+							"name": "Get List of Banks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**RETRIEVING ALL BANKS INCLUDING THEIR NAMES AND CODES*/\r",
+											"\r",
+											"/**Validating Success status*/\r",
+											"pm.test(\"Status confirmation 200\", ( ) => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/**Checking the response time not more than 1000ms*/\r",
+											"pm.test(\"Response time to be below 100ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+											"});\r",
+											"\r",
+											"/**validating that user response payload status*/\r",
+											"\r",
+											"pm.test(\"Test value of the response field success\", ( ) => {\r",
+											"var jsonData = pm.response.json( );\r",
+											"  pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}banks",
+									"host": [
+										"{{base_url}}banks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Status Check",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}status",
+									"host": [
+										"{{base_url}}status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Direct Debit",
+			"item": [
+				{
+					"name": "Banks",
+					"item": [
+						{
+							"name": "Get All Banks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**RETIEVING ALL BANKS APIs*/\r",
+											"\r",
+											"/**Validating Success status*/\r",
+											"pm.test(\"Success Status  200\", ( ) => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/**Checking the response time not more than 1000ms*/\r",
+											"pm.test(\"Response time to be below 800ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+											"});\r",
+											"\r",
+											"/**validating that user response payload status*/\r",
+											"\r",
+											"pm.test(\"Test value of the response field success\", ( ) => {\r",
+											"var jsonData = pm.response.json( );\r",
+											"  pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}direct-debit/banks?limit=100&page=1&sort_dir=ASC",
+									"host": [
+										"{{base_url}}direct-debit"
+									],
+									"path": [
+										"banks"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "100"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "sort_dir",
+											"value": "ASC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Bank Account Number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**VERIFYING CUSTOMER ACCOUNT NUMBER*/\r",
+											"\r",
+											"/**Validating Success status*/\r",
+											"pm.test(\"Data Option  200\", ( ) => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/**Checking the response time not more than 1000ms*/\r",
+											"pm.test(\"Response time to be below 1500ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+											"});\r",
+											"\r",
+											"/**validating that user response payload status*/\r",
+											"\r",
+											"pm.test(\"Test value of the response field success\", ( ) => {\r",
+											"var jsonData = pm.response.json( );\r",
+											"  pm.expect(jsonData.message).to.eql(\"success\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_number\": \"0040307487\",\r\n    \"bank_code\": \"032\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}direct-debit/banks/account-lookup",
+									"host": [
+										"{{base_url}}direct-debit"
+									],
+									"path": [
+										"banks",
+										"account-lookup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mandate",
+					"item": [
+						{
+							"name": "Create Mandates",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"/**CREATING MANDATES*/\r",
+											"\r",
+											"/**Validating Success status*/\r",
+											"pm.test(\"Mandate status  200\", ( ) => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"/**Checking the response time is less than 500ms*/\r",
+											"pm.test(\"Response time to be below 500ms\", () => {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"/**validating that user response payload status*/\r",
+											"\r",
+											"pm.test(\"Test value of the response field message\", ( ) => {\r",
+											"var jsonData = pm.response.json( );\r",
+											"  pm.expect(jsonData.message).to.eql(\"Insufficient balance\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_number\": \"2098082474\",\r\n    \"phone_number\": \"07033153792\",\r\n    \"debit_type\": \"all\",\r\n    \"frequency\": \"daily\",\r\n    \"bank_code\": \"033\",\r\n    \"email\": \"successayodeji62@gmail.com\",\r\n    \"number_of_payments\": 6,\r\n    \"payment_start_date\": \"2024-06-01\",\r\n    \"start_date\": \"2024-06-01\",\r\n    \"end_date\": \"2024-12-30\",\r\n    \"narration\": \"Rand\",\r\n    \"address\": \"Ikate\",\r\n    \"invite\": true,\r\n    \"amount\": 20,\r\n    \"type\": \"emandate\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}direct-debit/mandates",
+									"host": [
+										"{{base_url}}direct-debit"
+									],
+									"path": [
+										"mandates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Mandates",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}direct-debit/mandates?limit=10&page=1",
+									"host": [
+										"{{base_url}}direct-debit"
+									],
+									"path": [
+										"mandates"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Get All Transactions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Direct Debit\r",
+											"\r",
+											"// Transactions\r",
+											" \r",
+											"//    - GET All Transactions - PASS (no transaction had took place, hence no data returned)."
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}direct-debit/transactions?limit=10&page=1",
+									"host": [
+										"{{base_url}}direct-debit"
+									],
+									"path": [
+										"transactions"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Transactions Statistics",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}direct-debit/transactions/stats",
+									"host": [
+										"{{base_url}}direct-debit"
+									],
+									"path": [
+										"transactions",
+										"stats"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Webhooks",
+					"item": [
+						{
+							"name": "Mandate Webhook",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 2,\r\n  \"type\": \"mandate\",\r\n  \"timestamp\": \"2023-10-16T12:36:24.000Z\",\r\n  \"data\": {\r\n    \"amount\": \"500.00\",\r\n    \"status\": \"initiated\",\r\n    \"reference\": \"1544159/1000/000000000000\",\r\n    \"narration\": \"Rand\",\r\n    \"start_date\": \"2023-10-31T23:00:00.000Z\",\r\n    \"end_date\": \"2023-12-29T23:00:00.000Z\",\r\n    \"account_number\": \"1010101010\",\r\n    \"account_name\": \"TEST ACCOUNT\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{webhookUrl}}",
+									"host": [
+										"{{webhookUrl}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transaction Webhook",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n  \"id\": 5,\r\n  \"type\": \"transaction\",\r\n  \"timestamp\": \"2023-10-16T12:36:24.000Z\",\r\n  \"data\": {\r\n    \"amount\": \"500.00\",\r\n    \"status\": \"successful\",\r\n    \"reference\": \"DD-wdsu82udjws\",\r\n    \"narration\": \"Rand\",\r\n    \"transaction_date\": \"2023-10-31T23:00:00.000Z\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{webhookUrl}}",
+									"host": [
+										"{{webhookUrl}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Kolo",
+			"item": [
+				{
+					"name": "Add Bank Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bank_id\": \"033\",\r\n    \"description\": \"My money bank\",\r\n    \"account_number\": \"2098082474\",\r\n    \"data_source\": [\"email\", \"sms\", \"bank\"],\r\n    \"currency\": \"NGN\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}kolo/bank-accounts",
+							"host": [
+								"{{base_url}}kolo"
+							],
+							"path": [
+								"bank-accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bank Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "x-access-token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"description\": \"Testing\",\r\n    \"account_number\": \"2208667061\",\r\n    \"data_source\": [\r\n        \"email\",\r\n        \"sms\",\r\n        \"bank\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}kolo/bank-accounts/:id",
+							"host": [
+								"{{base_url}}kolo"
+							],
+							"path": [
+								"bank-accounts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "sk_live_1QOoG4ojgMXxItDt0XUwP5i0Fi3GJsaX6wU6F6cx",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "webhookUrl",
+			"value": "https://github.com/AyoSuccess/lendsqr_web_services/settings/hooks"
+		}
+	]
+}
